@@ -32,7 +32,12 @@ class Autoloader {
 	 * @return boolean
 	 */
 	public static function init( $name = '', $path = '', $failure_notice = null ) {
-		$autoloader = $path . '/vendor/autoload.php';
+		// If $path includes autoload.php, use it directly, otherwise append /vendor/autoload.php
+		if ( str_ends_with( $path, '.php' ) ) {
+			$autoloader = $path;
+		} else {
+			$autoloader = $path . '/vendor/autoload.php';
+		}
 
 		if ( ! \is_readable( $autoloader ) ) {
 			self::missing_autoloader( $name, $failure_notice );
